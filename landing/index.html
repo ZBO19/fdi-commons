@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FDI Commons — Label-Grounded Food–Drug Interaction Data</title>
+  <meta name="description" content="The first provenance-locked, open-core dataset of food–drug interactions extracted directly from FDA-approved drug labeling. Built for regulatory teams, knowledge vendors, and health-system integrators." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ========== NAV ========== -->
+  <nav id="main-nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="logo-icon">⚗</span>
+        <span class="logo-text">FDI<span class="logo-accent">Commons</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+        <li><a href="#evidence">Evidence</a></li>
+        <li><a href="#pipeline">Pipeline</a></li>
+        <li><a href="#segments">For Whom</a></li>
+        <li><a href="#academic">Academic</a></li>
+        <li><a href="#model">Model</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">Learn More</a>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <header id="hero">
+    <div class="hero-content">
+      <span class="hero-badge">Evidence-Based Research Infrastructure</span>
+      <h1>Label-Grounded<br/><span class="gradient-text">Food–Drug Interaction</span><br/>Commons</h1>
+      <p class="hero-sub">A provenance-locked, open-core dataset of food–drug interactions extracted directly from FDA SPL labeling (21 CFR 201.57) — built for researchers, regulatory teams, and health-system integrators.</p>
+      <div class="hero-actions">
+        <a href="mvp/index.html" class="btn btn-primary" id="hero-cta-primary">Explore the Dataset</a>
+        <a href="#pipeline" class="btn btn-outline" id="hero-cta-secondary">See the Methodology</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num" data-target="155000">0</span><span class="stat-suffix">+</span>
+          <span class="stat-label">SPL Labeling Documents</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-target="100">0</span><span class="stat-suffix">%</span>
+          <span class="stat-label">Provenance Traceability</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-target="0">CC0</span>
+          <span class="stat-label">Public Domain (openFDA)</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== PROBLEM ========== -->
+  <section id="problem" class="section">
+    <div class="container">
+      <span class="section-label">The Problem</span>
+      <h2>Food–Drug Interactions Are <span class="gradient-text">Trapped in Prose</span></h2>
+
+      <p class="section-desc">FDA labeling rules (21 CFR 201.57) explicitly <em>require</em> clinically significant food interactions with practical management instructions — yet this critical safety data remains locked in unstructured text, fragmented across label sections, and impossible to query at scale.</p>
+      <div class="problem-grid">
+        <div class="problem-card" id="problem-card-1">
+          <div class="problem-icon">📄</div>
+          <h3>Narrative, Not Computable</h3>
+          <p>Food-interaction data lives in free-text paragraphs across Drug Interactions, Dosage &amp; Administration, and Clinical Pharmacology sections. No existing database (DrugBank, KEGG, ChEMBL, SIDER) structures food–drug interactions specifically.</p>
+        </div>
+        <div class="problem-card" id="problem-card-2">
+          <div class="problem-icon">🔀</div>
+          <h3>Sectional Fragmentation</h3>
+          <p>FDA guidance links "Effect of Food" in Clinical Pharmacology to Dosage &amp; Administration instructions — but labels can state conflicting food-effect instructions in different sections, with no automated way to detect discrepancies.</p>
+        </div>
+        <div class="problem-card" id="problem-card-3">
+          <div class="problem-icon">⚠️</div>
+          <h3>Labeling ≠ FDA-Approved</h3>
+          <p>DailyMed warns its "in use" labeling may not match FDA-approved labeling and may not be verified by FDA. openFDA cautions not to rely on results for medical decisions. FDALabel notes SPL may differ from approved labeling at Drugs@FDA.</p>
+        </div>
+        <div class="problem-card" id="problem-card-4">
+          <div class="problem-icon">🤖</div>
+          <h3>AI Hallucination Risk</h3>
+          <p>LLM-based extraction adds confabulation risk. NIST's Generative AI Profile flags content provenance as a key concern. Fabricated citations have been documented in medical LLM outputs. Safety demands retrieval-grounded extraction only.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EVIDENCE: INTERACTION TABLE ========== -->
+  <section id="evidence" class="section section--dark">
+    <div class="container">
+      <span class="section-label">Why It Matters</span>
+      <h2>High-Impact Interactions <span class="gradient-text">Hiding in Labels</span></h2>
+      <p class="section-desc">These clinically important food–drug interactions demonstrate why structured, computable extraction is urgently needed. The same food can <em>increase or decrease</em> drug exposure depending on mechanism.</p>
+      <div class="evidence-table-wrapper">
+        <table class="evidence-table" id="evidence-table">
+          <thead>
+            <tr>
+              <th>Food Trigger</th>
+              <th>Mechanism</th>
+              <th>Effect</th>
+              <th>Clinical Consequence</th>
+              <th>On Label?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="food-tag">🍊 Grapefruit Juice</span></td>
+              <td>CYP3A4 inhibition (irreversible)</td>
+              <td><span class="dir-tag dir-increase">↑ Exposure</span></td>
+              <td>Increased adverse effects/toxicity for certain statins, calcium channel blockers</td>
+              <td><span class="label-tag label-yes">Common</span></td>
+            </tr>
+            <tr>
+              <td><span class="food-tag">🍊 Grapefruit Juice</span></td>
+              <td>OATP transporter inhibition</td>
+              <td><span class="dir-tag dir-decrease">↓ Exposure</span></td>
+              <td>Reduced efficacy (opposite direction — same food, different mechanism)</td>
+              <td><span class="label-tag label-rare">Rare</span></td>
+            </tr>
+            <tr>
+              <td><span class="food-tag">🌿 St. John's Wort</span></td>
+              <td>CYP3A4/P-gp induction</td>
+              <td><span class="dir-tag dir-decrease">↓ Exposure</span></td>
+              <td>Therapeutic failure — including transplant rejection</td>
+              <td><span class="label-tag label-yes">Common</span></td>
+            </tr>
+            <tr>
+              <td><span class="food-tag">🥬 Vitamin K Foods</span></td>
+              <td>PD antagonism</td>
+              <td><span class="dir-tag dir-decrease">↓ Effect</span></td>
+              <td>INR shifts → clotting/bleeding risk with warfarin</td>
+              <td><span class="label-tag label-yes">Common</span></td>
+            </tr>
+            <tr>
+              <td><span class="food-tag">🥛 Calcium / Dairy</span></td>
+              <td>Chelation/complexation</td>
+              <td><span class="dir-tag dir-decrease">↓ Absorption</span></td>
+              <td>Reduced bioavailability → treatment failure (tetracyclines, fluoroquinolones)</td>
+              <td><span class="label-tag label-yes">Common</span></td>
+            </tr>
+            <tr>
+              <td><span class="food-tag">🥩 Dietary Protein</span></td>
+              <td>LAT1 transport competition</td>
+              <td><span class="dir-tag dir-decrease">↓ CNS Entry</span></td>
+              <td>Reduced/delayed levodopa effect in Parkinson's patients</td>
+              <td><span class="label-tag label-some">Sometimes</span></td>
+            </tr>
+            <tr>
+              <td><span class="food-tag">☕ Coffee / Tea</span></td>
+              <td>Absorption interference</td>
+              <td><span class="dir-tag dir-decrease">↓ Absorption</span></td>
+              <td>Under-replacement risk with levothyroxine if taken together</td>
+              <td><span class="label-tag label-some">Sometimes</span></td>
+            </tr>
+            <tr>
+              <td><span class="food-tag">🧀 Tyramine Foods</span></td>
+              <td>MAO inhibition → tyramine crisis</td>
+              <td><span class="dir-tag dir-increase">↑ Effect</span></td>
+              <td>Potentially life-threatening hypertensive crisis with MAOIs</td>
+              <td><span class="label-tag label-yes">Common</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="evidence-note">Source: Mechanistic patterns documented in peer-reviewed clinical pharmacology literature. Label frequency reflects SPL analysis patterns. This table illustrates the extraction challenge — not all interactions are labeled consistently.</p>
+    </div>
+  </section>
+
+  <!-- ========== SOLUTION ========== -->
+  <section id="solution" class="section">
+    <div class="container">
+      <span class="section-label">The Solution</span>
+      <h2>Provenance-Locked <span class="gradient-text">Structured Claims</span></h2>
+      <p class="section-desc">Every food–drug interaction claim in the FDI Commons links to the <strong>exact label snippet</strong>, <strong>SPL version</strong>, <strong>effective date</strong>, and <strong>LOINC section code</strong> — so you always know where a claim comes from, what evidence tier it represents, and whether it's current.</p>
+      <div class="solution-features">
+        <div class="feature-card" id="feature-provenance">
+          <div class="feature-num">01</div>
+          <h3>Mandatory Provenance</h3>
+          <p>Source label, SPL set ID, effective date, LOINC section code, character offsets, and snippet hash — never optional. Every claim traceable to exact text.</p>
+        </div>
+        <div class="feature-card" id="feature-schema">
+          <div class="feature-num">02</div>
+          <h3>FDI Claim Schema</h3>
+          <p>Drug (RxNorm), food trigger, interaction type (PK/PD/food-effect), directionality, action instruction, timing qualifiers, mechanism, and evidence tier (label-stated / human study / mechanistic).</p>
+        </div>
+        <div class="feature-card" id="feature-audit">
+          <div class="feature-num">03</div>
+          <h3>Zero-Hallucination Policy</h3>
+          <p>LLM use is optional and strictly retrieval-grounded (RAG). Citations are programmatically attached from retrieved snippets — never LLM-generated. Automated citation verification on every claim.</p>
+        </div>
+        <div class="feature-card" id="feature-version">
+          <div class="feature-num">04</div>
+          <h3>Evidence Tier Separation</h3>
+          <p><strong>Label-stated:</strong> from regulatory text. <strong>Human clinical:</strong> peer-reviewed evidence. <strong>Mechanistic-only:</strong> in vitro / plausible mechanism. Tiers never auto-upgrade.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PIPELINE ========== -->
+  <section id="pipeline" class="section section--dark">
+    <div class="container">
+      <span class="section-label">How It Works</span>
+      <h2>From Raw Labels to <span class="gradient-text">Structured Claims</span></h2>
+      <p class="section-desc">A four-stage pipeline transforms FDA SPL labeling into structured, provenance-locked food–drug interaction claims. Built on public infrastructure: DailyMed + openFDA + LOINC-coded sections.</p>
+      <div class="pipeline-flow">
+        <div class="pipeline-step" id="pipeline-step-1">
+          <div class="step-num">1</div>
+          <div class="step-icon">📥</div>
+          <h3>Ingest</h3>
+          <p>Bulk-download SPL XML from DailyMed. Query openFDA API for structured metadata. Version and index every label.</p>
+          <span class="step-tag">DailyMed SPL · openFDA CC0</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" id="pipeline-step-2">
+          <div class="step-num">2</div>
+          <div class="step-icon">🔍</div>
+          <h3>Extract</h3>
+          <p>Target LOINC-coded sections. Apply rules + retrieval-grounded extraction for food-related claims with character offsets.</p>
+          <span class="step-tag">LOINC §34073-7 · §34068-7 · §34090-1</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" id="pipeline-step-3">
+          <div class="step-num">3</div>
+          <div class="step-icon">🏷️</div>
+          <h3>Structure</h3>
+          <p>Map claims to FDI schema. Normalize drugs → RxNorm, concepts → SNOMED CT. Tag evidence tiers. Compute snippet hashes.</p>
+          <span class="step-tag">RxNorm · SNOMED CT · FDI Schema</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" id="pipeline-step-4">
+          <div class="step-num">4</div>
+          <div class="step-icon">✅</div>
+          <h3>QA & Publish</h3>
+          <p>Cross-section consistency checks. Citation audits. Contradiction detection. Publish versioned dataset + API + QA reports.</p>
+          <span class="step-tag">QA Report · Dataset v0 · REST API</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PRODUCT PORTFOLIO ========== -->
+  <section id="products" class="section">
+    <div class="container">
+      <span class="section-label">Product Portfolio</span>
+      <h2>Eight Tools, <span class="gradient-text">One Infrastructure</span></h2>
+      <p class="section-desc">A prioritized portfolio of products and services built on the Commons infrastructure.</p>
+      <div class="product-grid">
+        <div class="product-card product-card--primary" id="product-1">
+          <span class="product-rank">#1</span>
+          <h3>FDI Commons API</h3>
+          <p>Versioned, provenance-preserving FDI/food-effect claims served via API with snippet+version provenance.</p>
+          <span class="product-score">Impact: ★★★★★</span>
+        </div>
+        <div class="product-card product-card--primary" id="product-2">
+          <span class="product-rank">#2</span>
+          <h3>Label FDI QA Copilot</h3>
+          <p>Find missing/contradictory food instructions across label sections with retrieval-grounded explanations.</p>
+          <span class="product-score">Impact: ★★★★☆</span>
+        </div>
+        <div class="product-card product-card--primary" id="product-3">
+          <span class="product-rank">#3</span>
+          <h3>Actionability Dashboard</h3>
+          <p>Benchmark how actionable food guidance is across the entire SPL corpus. Publishable results.</p>
+          <span class="product-score">Impact: ★★★★☆</span>
+        </div>
+        <div class="product-card" id="product-4">
+          <span class="product-rank">#4</span>
+          <h3>Normalization Layer</h3>
+          <p>Map drugs → RxNorm, foods → controlled vocabulary, mechanisms → taxonomy.</p>
+          <span class="product-score">Enabler</span>
+        </div>
+        <div class="product-card" id="product-5">
+          <span class="product-rank">#5</span>
+          <h3>FHIR Clinical Delivery</h3>
+          <p>Deliver FDI claims inside EHR workflows using FHIR. EU ePI–aligned.</p>
+          <span class="product-score">Integration</span>
+        </div>
+        <div class="product-card" id="product-6">
+          <span class="product-rank">#6</span>
+          <h3>PV Linker (FAERS)</h3>
+          <p>Link adverse event food mentions to label-stated FDIs for safety signal detection.</p>
+          <span class="product-score">Safety</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SEGMENTS ========== -->
+  <section id="segments" class="section section--dark">
+    <div class="container">
+      <span class="section-label">For Whom</span>
+      <h2>Built for Teams Who <span class="gradient-text">Need Accuracy</span></h2>
+      <div class="segments-grid">
+        <div class="segment-card" id="segment-regulatory">
+          <div class="segment-icon">🏛️</div>
+          <h3>Regulatory & Labeling Teams</h3>
+          <p>Consistency checks across label sections. Detect missing food-effect instructions before FDA submission.</p>
+          <ul>
+            <li>Cross-section QA reports</li>
+            <li>Pre-submission label audits</li>
+            <li>SPL update change-tracking</li>
+          </ul>
+        </div>
+        <div class="segment-card" id="segment-vendors">
+          <div class="segment-icon">📚</div>
+          <h3>Knowledge Vendors</h3>
+          <p>Structured FDI facts with provenance for drug information databases, clinical decision support, and compendia.</p>
+          <ul>
+            <li>API access to structured claims</li>
+            <li>Provenance-locked citations</li>
+            <li>Versioned, reproducible datasets</li>
+          </ul>
+        </div>
+        <div class="segment-card" id="segment-health">
+          <div class="segment-icon">🏥</div>
+          <h3>Health System Integrators</h3>
+          <p>Searchable, up-to-date labeling content flows for EHR integration — aligned with EU ePI FHIR evolution.</p>
+          <ul>
+            <li>FHIR-compatible data feeds</li>
+            <li>Real-time SPL update tracking</li>
+            <li>EU–US crosswalk service</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ACADEMIC ========== -->
+  <section id="academic" class="section">
+    <div class="container">
+      <span class="section-label">Academic Foundation</span>
+      <h2>A Rigorous <span class="gradient-text">Research Thesis</span></h2>
+      <p class="section-desc">Scoped to US SPL labeling (DailyMed + openFDA), with EU ePI as a design-compatible extension. Aligned with FDA CERSI research infrastructure and NIST AI risk management frameworks.</p>
+
+      <div class="thesis-goal">
+        <div class="thesis-quote">"Create and evaluate a provenance-preserving schema + extraction pipeline that transforms label-stated food–drug interactions and food-effect dosing instructions into structured claims from US SPL."</div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-phase" id="timeline-governance">
+          <div class="timeline-bar" style="--phase-color: #8C1515"></div>
+          <div class="timeline-info">
+            <h3>Governance & Scope</h3>
+            <p>Thesis question lock, data rights policy, labeling-status framework</p>
+            <span class="timeline-weeks">Weeks 1–3</span>
+          </div>
+        </div>
+        <div class="timeline-phase" id="timeline-engineering">
+          <div class="timeline-bar" style="--phase-color: #8C1515"></div>
+          <div class="timeline-info">
+            <h3>Engineering</h3>
+            <p>SPL ingestion + LOINC targeting, claim schema + provenance fields, baseline extractor</p>
+            <span class="timeline-weeks">Weeks 3–8</span>
+          </div>
+        </div>
+        <div class="timeline-phase" id="timeline-evaluation">
+          <div class="timeline-bar" style="--phase-color: #8C1515"></div>
+          <div class="timeline-info">
+            <h3>Evaluation</h3>
+            <p>Gold-standard annotation, pilot adjudication, precision/recall/F1 metrics, error analysis</p>
+            <span class="timeline-weeks">Weeks 6–11</span>
+          </div>
+        </div>
+        <div class="timeline-phase" id="timeline-release">
+          <div class="timeline-bar" style="--phase-color: #8C1515"></div>
+          <div class="timeline-info">
+            <h3>Release</h3>
+            <p>Dataset v0, DOI-ready package, citation audit report, methods paper</p>
+            <span class="timeline-weeks">Weeks 10–13</span>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="subsection-heading">Target Thesis Deliverables</h3>
+      <div class="deliverables-grid">
+        <div class="deliverable-card">
+          <span class="del-icon">📊</span>
+          <h4>FDI Claim Schema v0.1</h4>
+          <p>With mandatory provenance fields, evidence tiers, and version tracking</p>
+        </div>
+        <div class="deliverable-card">
+          <span class="del-icon">🔧</span>
+          <h4>Ingestion Pipeline</h4>
+          <p>Reproducible SPL parsing with LOINC section targeting</p>
+        </div>
+        <div class="deliverable-card">
+          <span class="del-icon">🏷️</span>
+          <h4>Dataset v0</h4>
+          <p>Extracted food-related claims with full provenance chain</p>
+        </div>
+        <div class="deliverable-card">
+          <span class="del-icon">📝</span>
+          <h4>Gold Standard Set</h4>
+          <p>Small but defensible annotated sample for evaluation</p>
+        </div>
+        <div class="deliverable-card">
+          <span class="del-icon">📄</span>
+          <h4>Methods Paper</h4>
+          <p>Extraction methodology, provenance audits, baseline performance</p>
+        </div>
+        <div class="deliverable-card">
+          <span class="del-icon">✅</span>
+          <h4>Citation Audit</h4>
+          <p>Provenance validity report with snippet-hash verification</p>
+        </div>
+      </div>
+
+      <div class="university-grid">
+        <h3 class="uni-heading">Target University Partners (FDA CERSI Network)</h3>
+        <div class="uni-cards">
+          <div class="uni-card">
+            <strong>Stanford</strong>
+            <span>Nigam Shah · Russ Altman</span>
+          </div>
+          <div class="uni-card">
+            <strong>Harvard</strong>
+            <span>Isaac Kohane · DBMI</span>
+          </div>
+          <div class="uni-card">
+            <strong>UCSF</strong>
+            <span>Atul Butte · Comp Health Sci</span>
+          </div>
+          <div class="uni-card">
+            <strong>Columbia</strong>
+            <span>Noémie Elhadad · Bio NLP</span>
+          </div>
+          <div class="uni-card">
+            <strong>Johns Hopkins</strong>
+            <span>Bloomberg CERSI</span>
+          </div>
+          <div class="uni-card">
+            <strong>MIT</strong>
+            <span>Jameel Clinic · AI Health</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="funding-align">
+        <h3 class="uni-heading">Funding Alignment</h3>
+        <div class="uni-cards">
+          <div class="uni-card"><strong>NIH</strong><span>Precision medicine · Drug safety · AI</span></div>
+          <div class="uni-card"><strong>DARPA</strong><span>AI knowledge extraction · Bio KGs</span></div>
+          <div class="uni-card"><strong>EU Horizon</strong><span>Digital health · Nutrition</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== COMMERCIAL MODEL ========== -->
+  <section id="model" class="section section--dark">
+    <div class="container">
+      <span class="section-label">Commercial Model</span>
+      <h2>Open Core, <span class="gradient-text">Sustainability Model</span></h2>
+      <p class="section-desc">A public-good dataset drives adoption. A paid QA and compliance layer captures commercial value. CC0 data enables commercial reuse.</p>
+      <div class="pricing-grid">
+        <div class="pricing-card" id="pricing-open">
+          <div class="pricing-badge">Open Core</div>
+          <h3>FDI Dataset</h3>
+          <div class="pricing-price">Free</div>
+          <p class="pricing-desc">The structured food–drug interaction dataset with full provenance — CC0 licensed for public use.</p>
+          <ul>
+            <li>✓ Structured FDI claims</li>
+            <li>✓ Full provenance chain</li>
+            <li>✓ CC0 public domain</li>
+            <li>✓ Bulk download access</li>
+            <li>✓ Community support</li>
+            <li>✓ DOI-versioned releases</li>
+          </ul>
+        </div>
+        <div class="pricing-card pricing-card--featured" id="pricing-pro">
+          <div class="pricing-badge">Commercial Wedge</div>
+          <h3>FDI Label QA + Diff</h3>
+          <div class="pricing-price">Contact Us</div>
+          <p class="pricing-desc">Automated quality assurance for labeling teams and compliance workflows.</p>
+          <ul>
+            <li>✓ Everything in Open Core</li>
+            <li>✓ Cross-section QA reports</li>
+            <li>✓ Contradiction detection</li>
+            <li>✓ SPL update monitoring</li>
+            <li>✓ REST API + webhooks</li>
+            <li>✓ Citation audit trails</li>
+            <li>✓ Actionability scoring</li>
+            <li>✓ Priority support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DATA TRUST ========== -->
+  <section id="trust" class="section">
+    <div class="container">
+      <span class="section-label">Data Trust & Safety</span>
+      <h2>Provenance <span class="gradient-text">You Can Verify</span></h2>
+      <div class="trust-grid">
+        <div class="trust-item" id="trust-fda">
+          <div class="trust-icon">🔒</div>
+          <h3>FDA 21 CFR 201.57</h3>
+          <p>Built on the federal regulation requiring clinically significant food interactions and practical instructions in drug labeling.</p>
+        </div>
+        <div class="trust-item" id="trust-nist">
+          <div class="trust-icon">🛡️</div>
+          <h3>NIST AI RMF Aligned</h3>
+          <p>Content provenance, pre-deployment testing, and incident disclosure controls consistent with NIST's Generative AI Profile.</p>
+        </div>
+        <div class="trust-item" id="trust-cc0">
+          <div class="trust-icon">📜</div>
+          <h3>CC0 Licensed Data</h3>
+          <p>openFDA content is CC0 public domain for commercial reuse. NLM label text redistribution under legal review for derived facts vs. verbatim text.</p>
+        </div>
+        <div class="trust-item" id="trust-audit">
+          <div class="trust-icon">🔍</div>
+          <h3>Citation Validity = 100%</h3>
+          <p>Every claim maps to an exact snippet + version. Citations programmatically attached, never LLM-generated. Automated verification on every output.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section id="contact" class="section section--dark">
+    <div class="container">
+      <span class="section-label">Get Involved</span>
+      <h2>Connect with the <span class="gradient-text">FDI Commons</span></h2>
+      <p class="section-desc">Whether you're a researcher, regulator, vendor, or health system — we want to hear from you.</p>
+      <form id="contact-form" class="contact-form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contact-name">Name</label>
+            <input type="text" id="contact-name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="contact-email">Email</label>
+            <input type="email" id="contact-email" placeholder="you@organization.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contact-org">Organization</label>
+          <input type="text" id="contact-org" placeholder="Your organization" />
+        </div>
+        <div class="form-group">
+          <label for="contact-role">I'm interested as a…</label>
+          <select id="contact-role">
+            <option value="">Select your role</option>
+            <option value="researcher">Researcher / Academic</option>
+            <option value="regulatory">Regulatory / Labeling Team</option>
+            <option value="vendor">Knowledge / Data Vendor</option>
+            <option value="health-system">Health System / EHR Integrator</option>
+            <option value="investor">Investor / Advisor</option>
+            <option value="professor">University Professor</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" rows="4" placeholder="Tell us about your use case or interest…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="contact-submit">Get in Touch</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer id="main-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">⚗</span>
+        <span class="logo-text">FDI<span class="logo-accent">Commons</span></span>
+        <p>Label-Grounded Food–Drug Interaction Data</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Project</h4>
+          <a href="#problem">Problem</a>
+          <a href="#solution">Solution</a>
+          <a href="#pipeline">Pipeline</a>
+          <a href="#products">Products</a>
+        </div>
+        <div class="footer-col">
+          <h4>Data Sources</h4>
+          <a href="https://dailymed.nlm.nih.gov/" target="_blank" rel="noopener">DailyMed</a>
+          <a href="https://open.fda.gov/" target="_blank" rel="noopener">openFDA</a>
+          <a href="https://loinc.org/" target="_blank" rel="noopener">LOINC</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Data License (CC0)</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 FDI Commons. Built with provenance in mind. Not for clinical decision-making.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

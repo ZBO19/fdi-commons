@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FDI Label QA — Food–Drug Interaction Analyzer</title>
+  <meta name="description" content="Search FDA drug labels and extract structured food–drug interaction claims with full provenance. Detect cross-section contradictions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ========== TOP BAR ========== -->
+  <header id="app-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <span class="brand-icon">⚗</span>
+        <span class="brand-name">FDI<span class="brand-accent">Label QA</span></span>
+        <span class="brand-tag">MVP</span>
+      </div>
+      <div class="header-status" id="api-status">
+        <span class="status-dot"></span>
+        <span class="status-text">openFDA API</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== MAIN APP ========== -->
+  <main id="app-main">
+    <!-- SEARCH PANEL -->
+    <section id="search-panel" class="panel">
+      <h2 class="panel-title">🔍 Search Drug Labels</h2>
+      <p class="panel-desc">Search the openFDA drug labeling database by drug name. Results include food–drug interaction analysis with full provenance.</p>
+      <div class="search-bar" id="search-bar">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Enter drug name (e.g., warfarin, metformin, atorvastatin)…"
+          autocomplete="off"
+        />
+        <button id="search-btn" class="btn btn-primary">Search</button>
+      </div>
+      <div class="quick-searches" id="quick-searches">
+        <span class="quick-label">Try:</span>
+        <button class="quick-btn" data-drug="warfarin">Warfarin</button>
+        <button class="quick-btn" data-drug="metformin">Metformin</button>
+        <button class="quick-btn" data-drug="atorvastatin">Atorvastatin</button>
+        <button class="quick-btn" data-drug="cyclosporine">Cyclosporine</button>
+        <button class="quick-btn" data-drug="simvastatin">Simvastatin</button>
+        <button class="quick-btn" data-drug="levothyroxine">Levothyroxine</button>
+        <button class="quick-btn" data-drug="ciprofloxacin">Ciprofloxacin</button>
+        <button class="quick-btn" data-drug="amlodipine">Amlodipine</button>
+      </div>
+    </section>
+
+    <!-- LOADING -->
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+      <p>Querying openFDA and analyzing label sections…</p>
+    </div>
+
+    <!-- RESULTS CONTAINER -->
+    <div id="results-container" class="hidden">
+
+      <!-- DRUG INFO HEADER -->
+      <section id="drug-info" class="panel">
+        <div class="drug-header">
+          <div>
+            <h2 class="drug-name" id="drug-name"></h2>
+            <p class="drug-meta" id="drug-meta"></p>
+          </div>
+          <div class="drug-actions">
+            <button class="btn btn-outline btn-sm" id="export-json-btn">Export JSON</button>
+            <button class="btn btn-outline btn-sm" id="export-report-btn">Export QA Report</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- QA REPORT SUMMARY -->
+      <section id="qa-summary" class="panel panel--qa">
+        <h3 class="panel-title">📋 QA Report Summary</h3>
+        <div class="qa-stats" id="qa-stats"></div>
+        <div id="qa-issues"></div>
+      </section>
+
+      <!-- EXTRACTED FDI CLAIMS -->
+      <section id="fdi-claims" class="panel">
+        <h3 class="panel-title">🏷️ Extracted Food–Drug Interaction Claims</h3>
+        <p class="panel-desc">Claims extracted via keyword pattern matching against label text. Each claim includes provenance metadata.</p>
+        <div id="claims-list"></div>
+      </section>
+
+      <!-- RAW LABEL SECTIONS -->
+      <section id="label-sections" class="panel">
+        <h3 class="panel-title">📄 Label Sections (Source Text)</h3>
+        <div class="section-tabs" id="section-tabs"></div>
+        <div id="section-content" class="section-content-area"></div>
+      </section>
+
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div id="empty-state" class="empty-state">
+      <div class="empty-icon">⚗</div>
+      <h3>Search for a Drug to Begin</h3>
+      <p>Enter a drug name above to query the openFDA API, extract food–drug interaction claims, and generate a provenance-locked QA report.</p>
+      <div class="empty-features">
+        <div class="empty-feat">
+          <span>📥</span>
+          <p>Real openFDA data</p>
+        </div>
+        <div class="empty-feat">
+          <span>🔍</span>
+          <p>FDI extraction</p>
+        </div>
+        <div class="empty-feat">
+          <span>✅</span>
+          <p>Cross-section QA</p>
+        </div>
+        <div class="empty-feat">
+          <span>🔒</span>
+          <p>Full provenance</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="app-footer">
+    <p>FDI Label QA MVP — Data sourced from <a href="https://open.fda.gov/" target="_blank" rel="noopener">openFDA</a> (CC0 Public Domain). Not for clinical decision-making.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

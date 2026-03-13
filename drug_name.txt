@@ -1,0 +1,39 @@
+drug_name
+drug_rxcui
+
+food_item
+food_compound
+
+interaction_type
+PK / PD / Food-effect
+
+mechanism
+CYP inhibition
+transporter competition
+chelation
+etc
+
+direction
+increase_exposure
+decrease_exposure
+increase_effect
+decrease_effect
+
+timing_guidance
+
+evidence_tier
+LABEL_STATED
+HUMAN_STUDY
+MECHANISTIC
+
+label_status
+FDA_APPROVED
+IN_USE_SPL
+
+provenance
+set_id
+version
+section
+offset_start
+offset_end
+source_snippet
