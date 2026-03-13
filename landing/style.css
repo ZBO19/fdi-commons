@@ -467,7 +467,8 @@ ul { list-style: none; }
 .pipeline-step {
   flex: 1;
   min-width: 220px;
-  padding: 28px 20px;
+  min-height: 320px;
+  padding: 32px 20px 28px;
   border-radius: var(--radius-md);
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -476,6 +477,8 @@ ul { list-style: none; }
   position: relative;
   transition: var(--transition);
   box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
 }
 
 .pipeline-step:hover {
@@ -504,7 +507,7 @@ ul { list-style: none; }
 
 .pipeline-step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
 
-.pipeline-step p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; }
+.pipeline-step p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; flex: 1; }
 
 .step-tag {
   display: inline-block;
